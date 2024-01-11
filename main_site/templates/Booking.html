@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Бронирование столика</title>
+    <link rel="shortcut icon" href="{% static 'images/icon.png' %}" />
+</head>
+<body>
+{#<h1>Booking Details</h1>#}
+{#<p>ID бронирования: {{ booking.id }}</p>#}
+<h1>Схемы залов</h1>
+<form>
+    <p>
+        <label for="time">Время (часы): </label>
+        <input type="time" id="time" name="time" step="3600"/>
+    </p>
+    <p>
+        <button type="submit">Отправить</button>
+    </p>
+</form>
+
+
+
+{% for zav in zaved %}
+    {% if booking.id == zav.id %}
+    <div>
+        <h2>Заведение: {{ zav.name }}</h2> <!-- Предполагается, что у модели Zaved есть поле name -->
+        {% for schema in zav.schema.all %}
+            <img src="{{ schema.schemaPhoto.url }}" alt="Схема зала {{ zav.name }}"  width="700px"/>
+        {% endfor %}
+    </div>
+    {% endif %}
+{% endfor %}
+
+
+
+
+<script>
+    function incrementTime() {
+        var timeInput = document.getElementById("time");
+        if (timeInput.value) {
+            var timeParts = timeInput.value.split(":");
+            var hours = parseInt(timeParts[0]);
+            var minutes = parseInt(timeParts[1]);
+
+            // Увеличиваем час на 1
+            hours = (hours + 1) % 24;
+
+            // Преобразуем обратно в строку и убеждаемся, что формат сохраняется
+            var newTime = (hours < 10 ? "0" : "") + hours + ":" + (minutes < 10 ? "0" : "") + minutes;
+
+            timeInput.value = newTime;
+        }
+    }
+</script>
+</body>
+</html>

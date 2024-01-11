@@ -1,0 +1,110 @@
+.class_a{
+    text-decoration: none;
+    color: #00D55A;
+    /*#00D55A*/
+}
+
+
+
+
+.h1_up{
+    text-align: center;
+    font-size: 45px;
+
+}
+
+.btn_choce{
+    text-align: center;
+}
+.button {
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            border: 2px solid #ddd;
+            background-color: #f8f8f8;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+.button:hover{
+      border-color: #00D55A;
+            background-color: #e0ffe0;
+}
+
+        .button.active {
+            border-color: #00D55A;
+            background-color: #e0ffe0;
+        }
+
+        #text-container {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+
+        .dynamic-div {
+            padding: 15px;
+            margin: 5px 0;
+            /*background-color: #f0f0f0;*/
+            /*border: 1px solid #dcdcdc;*/
+        }
+        .main_div{
+            padding-left: 30px;
+        }
+
+
+
+.preference-btn {
+    padding: 10px 15px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Стили для активной кнопки */
+.preference-btn.active {
+    background-color: #02a646; /* или другой цвет на ваш выбор */
+    color: white; /* чтобы текст выделялся на тёмном фоне */
+    border-color: #02a646;
+}
+
+
+ /* Стили для текстового поля */
+        input[type="text"].styled-input {
+            width: 300px;        /* Ширина поля */
+            height: 30px;       /* Высота поля */
+            padding: 5px 10px;  /* Внутренние отступы: верхний/нижний и левый/правый */
+            margin: 10px 0;     /* Внешние отступы */
+            border: 1px solid #ccc; /* Граница поля */
+            border-radius: 4px; /* Скругление углов */
+            font-size: 16px;    /* Размер шрифта */
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); /* Тень вокруг поля */
+        }
+
+        /* Стили для текстового поля при фокусе */
+        input[type="text"].styled-input:focus {
+            border-color: #02a646; /* Цвет границы при фокусе */
+            box-shadow: 0px 0px 8px rgba(0, 165, 70, 0.4); /* Тень вокруг поля при фокусе */
+            outline: none; /* Убираем стандартный контур */
+        }
+
+        /* Стили для textarea */
+        textarea.styled-textarea {
+            width: 500px;        /* Ширина поля */
+            height: 100px;       /* Высота поля */
+            padding: 10px;       /* Внутренний отступ */
+            border: 2px solid #ccc; /* Граница поля */
+            border-radius: 8px;  /* Скругление углов */
+            font-size: 16px;     /* Размер шрифта */
+            line-height: 1.5;    /* Межстрочный интервал */
+            resize: vertical;    /* Позволяет пользователю изменять размер только вертикально */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень вокруг поля */
+        }
+
+        /* Стили для textarea при фокусе */
+        textarea.styled-textarea:focus {
+            border-color: #02a646; /* Цвет границы при фокусе */
+            box-shadow: 0 0 8px rgba(2, 166, 70, 0.2); /* Тень вокруг поля при фокусе */
+            outline: none; /* Убираем стандартный контур */
+        }

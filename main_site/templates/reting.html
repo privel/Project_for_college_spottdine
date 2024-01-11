@@ -1,0 +1,156 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>SpottDine - Отзывы</title>
+    <link rel="stylesheet" href="{% static 'css/reserv.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reting.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/icon.png' %}" />
+</head>
+<body>
+<header class="header">
+    <div class="logo"><a href="/" , style="text-decoration: none; color: black;">Spott <font
+            color="#00D55A">Dine</font> </a>
+        <!--            {#-->
+        <!--            <div class="green">Dine</div>-->
+        <!--            #}-->
+    </div>
+
+</header>
+{% for zav in zaved %}
+{% if resoran_id == zav.id %}
+
+<h1 class="h1_up">
+    Отзывы о ресторане
+    <font color="#02a646"> <a href="/booking/{{zav.id}}" class="class_a">{{zav.name}}</a></font>
+</h1>
+
+
+<div class="btn_choce">
+    <button class="button" id="button1" onclick="changeContent('first', this)">Понравилось</button>
+    <button class="button" id="button2" onclick="changeContent('second', this)">Не понравилось</button>
+</div>
+<div id="text-container">
+    <!-- Сюда будет вставляться DIV -->
+</div>
+
+
+{% endif%}
+{% endfor %}
+
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Создаем объект для отслеживания нажатых кнопок
+    let clickedPreferences = {};
+
+    document.getElementById('text-container').addEventListener('click', function(event) {
+        // Проверяем, что клик был совершен на элементе с классом 'preference-btn'
+        if (event.target.classList.contains('preference-btn')) {
+            const preference = event.target.getAttribute('data-preference');
+            // Проверяем, была ли кнопка уже нажата
+            if (!clickedPreferences[preference]) {
+                // Если не нажата, то логируем и делаем ее активной
+                console.log(preference);
+                clickedPreferences[preference] = true; // Отмечаем кнопку как нажатую
+
+                // Обновляем значение скрытого поля (если оно уже есть в DOM)
+                const preferencesInput = document.getElementById('preferences-input');
+                if (preferencesInput) {
+                    preferencesInput.value = preference;
+                }
+                // Добавляем класс для визуального отображения активной кнопки
+                event.target.classList.add('active');
+            } else {
+                // Если кнопка уже была нажата, выводим сообщение
+                console.log(preference + ' уже было выбрано');
+                // Опционально: убираем класс активности с кнопки
+                event.target.classList.remove('active');
+                // Удаляем выбор из объекта отслеживания
+                delete clickedPreferences[preference];
+            }
+        }
+    });
+});
+
+
+
+    function changeContent(buttonId, element) {
+        // Сначала сбросим класс active у всех кнопок
+        document.querySelectorAll('.button').forEach(function(button) {
+            button.classList.remove('active');
+        });
+
+        // Добавляем класс active на нажатую кнопку
+        element.classList.add('active');
+
+        var htmlContent = '';
+        if (buttonId === 'first') {
+            htmlContent = '<div class="dynamic-div">' +
+                '<div class="main_div"> ' +
+                '' +
+                '<form method="POST" action="">' +
+                '        {% csrf_token %}' +
+                '<p>' +
+                '<label><h2>Введите ваше имя</h2></label>' +
+                '<input type="text"  name="autor" value="" class="styled-input"></p>' +
+                '        <p>' +
+                '            <label><h2>Что больше всего понравилось?</h2></label><br>' +
+                '            <button type="button" class="preference-btn" data-preference="Еда">Еда</button>\n' +
+                '    <button type="button" class="preference-btn" data-preference="Сервис">Сервис</button>\n' +
+                '    <button type="button" class="preference-btn" data-preference="Интерьер">Интерьер</button>\n' +
+                '    <button type="button" class="preference-btn" data-preference="Атмосфера">Атмосфера</button>\n' +
+                '    <button type="button" class="preference-btn" data-preference="Музыка">Музыка</button>\n' +
+                '    <button type="button" class="preference-btn" data-preference="Месторасположение">Месторасположение</button>\n' +
+                '    <input type="hidden" id="preferences-input" name="preferences" value="">' +
+                '' +
+                '        </p>' +
+                '<input type="hidden"  name="is_good" value="True">' +
+                '        <p>' +
+                '            <label><h2>Напишите пару слов</h2></label><br>' +
+                '            <textarea name="content" class="styled-textarea"></textarea>' +
+                '        </p>' +
+                '        <input type="submit" value="Отправить" class="button">' +
+                '    </form>' +
+                '</div>' +
+                '</div>';
+        } else if (buttonId === 'second') {
+            htmlContent = '<div class="dynamic-div">' +
+                '<div class="main_div"> ' +
+                '' +
+                '<form method="POST" action="">' +
+                '        {% csrf_token %}' +
+                '<p>' +
+                '<label><h2>Введите ваше имя</h2></label>' +
+                '<input type="text"  name="autor" value="" class="styled-input"></p>' +
+                '        <p>' +
+                '            <label><h2>Что больше всего не понравилось?</h2></label><br>' +
+                '            <button type="button" class="preference-btn" data-preference="Еда">Еда</button>\n' +
+                '    <button type="button" class="preference-btn" data-preference="Сервис">Сервис</button>\n' +
+                '    <button type="button" class="preference-btn" data-preference="Интерьер">Интерьер</button>\n' +
+                '    <button type="button" class="preference-btn" data-preference="Атмосфера">Атмосфера</button>\n' +
+                '    <button type="button" class="preference-btn" data-preference="Музыка">Музыка</button>\n' +
+                '    <button type="button" class="preference-btn" data-preference="Месторасположение">Месторасположение</button>\n' +
+                '    <input type="hidden" id="preferences-input" name="preferences" value="">' +
+                '' +
+                '        </p>' +
+                '<input type="hidden"  name="is_good" value="False">' +
+                '        <p>' +
+                '            <label><h2>Напишите пару слов</h2></label><br>' +
+                '            <textarea name="content" class="styled-textarea"></textarea>' +
+                '        </p>' +
+                '        <input type="submit" value="Отправить" class="button">' +
+                '    </form>' +
+                '</div>' +
+                '</div>';
+        }
+        document.getElementById('text-container').innerHTML = htmlContent;
+    }
+</script>
+</body>
+</html>

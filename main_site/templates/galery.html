@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Галерея ресторана "Традициональ"</title>
+    <link rel="stylesheet" href="{% static 'css/galery.css' %}">
+
+    <link rel="shortcut icon" href="{% static 'images/icon.png' %}" />
+</head>
+<body>
+
+<div class="gallery-container">
+
+    <div class="gallery">
+        {% for zav in zaved %}
+            {% if zav.id == zaved_id %}
+                {% for image in zav.images.all %}
+                    <div class="gallery-item">
+                        <img src="{{ image.image.url }}" alt="{{ zav.name }}">
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+    
+
+
+        <div class="thumbnails">
+            {% for zav in zaved %}
+
+            {% for image in zav.images.all %}
+            <div class="thumbnail-item">
+                <img src="{{ image.image.url }}" alt="">
+            </div>
+
+            {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const thumbnails = document.querySelectorAll('.thumbnail-item img');
+            const gallery = document.querySelector('.gallery');
+
+            thumbnails.forEach((thumbnail, index) => {
+                thumbnail.addEventListener('click', () => {
+                    // Удаляем класс 'active' у всех миниатюр
+                    thumbnails.forEach(t => t.classList.remove('active'));
+                    // Добавляем класс 'active' только для нажатой миниатюры
+                    thumbnail.classList.add('active');
+
+                    const src = thumbnail.getAttribute('src');
+                    const alt = thumbnail.getAttribute('alt');
+                    const newImage = document.createElement('img');
+                    newImage.src = src;
+                    newImage.alt = alt;
+                    newImage.classList.add('gallery-item', 'hidden');
+
+                    gallery.innerHTML = '';
+                    gallery.appendChild(newImage);
+
+                    anime({
+                        targets: newImage,
+                        opacity: [0, 1],
+                        easing: 'easeInOutQuad',
+                        duration: 500,
+                    });
+                });
+            });
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.0/anime.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,602 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpottDine - Бронирование столиков</title>
+    <link rel="stylesheet" href="{% static 'css/reserv.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    {% block extrascripts %}
+    <script src="{% static 'js/modal.js' %}"></script>
+    {% endblock %}
+    <link rel="shortcut icon" href="{% static 'images/icon.png' %}"/>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=ВАШ_API_КЛЮЧ&lang=ru_RU" type="text/javascript"></script>
+
+</head>
+<body>
+{% for zav in zaved %}
+{% if booking.id == zav.id %}
+<header class="header">
+    <div class="logo"><a href="/", style="text-decoration: none; color: black;">Spott <font
+            color="#00D55A">Dine</font> </a></div>
+    <div class="search-bar">
+        <form action="" method="GET">
+            {% csrf_token %}
+            <input type="text" name="q" placeholder="Поиск..." class="transparent-input">
+            <button type="submit">Найти</button>
+        </form>
+    </div>
+</header>
+
+<div class="main">
+    <h1>{{zav.name}}</h1>
+    <div class="descript">
+        <button>Описание</button>
+        <a href="/menu/{{zav.id}}"><button>Меню</button></a>
+        <a style="text-decoration: none; color: #333333" href="/galery/{{zav.id}}">
+            <button>Фотоальбомы</button>
+        </a>
+    </div>
+    <div class="slider">
+
+        {% for image in zav.images.all %}
+
+        <img src="{{ image.image.url }}">
+
+        {% empty %}
+        <img src="{{ zav.image.url }}" alt="Image of {{ zav.name }}">
+        {% endfor %}
+    </div>
+</div>
+
+<div class="outer-container">
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1>{{zav.name}}</h1>
+                <button class="share" onclick="shareContent()">Поделиться</button>
+            </div>
+            <a href="#">{{zav.adress}}</a>
+            <p><strong>Телефон: {{zav.telephone}}</strong></p>
+            <p>
+
+            <table>
+                <tr>
+                    <td rowspan="2">
+                        <img width="40px" src="{% static "images/plateGBig.png" %}">
+                    </td>
+                    <td>
+                        <font style=" font-size: 18px; font-weight: bold;">Кухня</font>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ zav.kitchen }}
+                    </td>
+                </tr>
+            </table>
+
+            </p>
+
+            <p>
+
+            <table>
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td rowspan="2">
+                                    <img width="40px" src="{% static "images/tengeGBig.png" %}" >
+                                </td>
+                                <td>
+                                    <font style=" font-size: 18px; font-weight: bold;">Средний счет</font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ zav.avr_cost }}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td rowspan="2">
+                                    <img width="57px" src="{% static "images/person.png" %}">
+                                </td>
+                                <td>
+                                    <font style=" font-size: 18px; font-weight: bold;">Количество мест</font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ zav.count_people }}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+
+            </p>
+
+
+            <p>
+            <table>
+                <tr>
+                    <td>
+                        <span class="place-info-list__icon">🌟</span>
+                    </td>
+                    <td>
+                        {{ zav.have }}
+                    </td>
+                </tr>
+
+            </table>
+            </p>
+
+            <p>
+            <table>
+                <tr>
+                    <td>
+
+                        <span class="place-info-list__icon">🏢</span>
+                    </td>
+                    <td colspan="2">
+                        {{ zav.desc_zal }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+            </p>
+
+
+            <p>
+            <table>
+                <tr>
+                    <td>
+                        <span class="place-info-list__icon">🎸</span>
+                    </td>
+                    <td>
+                        {{ zav.music }}
+                    </td>
+                </tr>
+
+            </table>
+            </p>
+
+            <p>
+            <table>
+                <tr>
+                    <td>
+                        <span class="place-info-list__icon">👶</span>
+                    </td>
+                    <td>
+                        {{ zav.children }}
+                    </td>
+                </tr>
+
+            </table>
+            </p>
+
+
+            <p>
+            <table>
+                <tr>
+                    <td>
+                        <span class="place-info-list__icon">🅿️</span>
+                    </td>
+                    <td>
+                        {{ zav.parking }}
+                    </td>
+                </tr>
+
+            </table>
+            </p>
+
+            <p>
+            <table>
+                <tr>
+                    <td>
+                        <span class="place-info-list__icon">⌚️</span>
+                    </td>
+                    <td>
+                        {{ zav.time_work }}
+                    </td>
+                </tr>
+
+            </table>
+            </p>
+
+            <p>
+                Адрес: {{zav.adress}}
+            </p>
+
+            <p style="padding-top: 20px;">
+                Телефоны:<a href="tel: {{zav.telephone}}"> {{zav.telephone}}</a>
+            </p>
+
+            <p style="padding-top: 20px;">
+
+            <table>
+                <tr>
+                    <td>
+                    <span>
+                        <a href="{{zav.whatsapp}}">
+                            <img src="{% static "image/whatsapp.png" %}" width='25px'>
+                        </a>
+                    </span>
+                    </td>
+                    <td>
+                        <a href="{{zav.whatsapp}}" class="whatsapp">Whatsapp</a>
+                    </td>
+                </tr>
+            </table>
+
+
+            <table>
+                <tr>
+                    <td>
+                    <span>
+                        <a href="{{zav.sotial}}">
+                            <img src="{% static "image/instagram.png" %}" width='25px'>
+                        </a>
+                    </span>
+                    </td>
+                    <td>
+                        <a href="{{zav.sotial}}" class="whatsapp">Instagram</a>
+                    </td>
+                </tr>
+            </table>
+
+
+            <table>
+                <tr>
+                    <td>
+                    <span>
+                        <a href="{{zav.site_adress}}">
+                            <img src="{% static "image/web.png" %}" width='25px'>
+                        </a>
+                    </span>
+                    </td>
+                    <td>
+                        <a href="{{zav.site_adress}}" class="whatsapp">Веб-сайт</a>
+                    </td>
+                </tr>
+            </table>
+
+            </p>
+
+            <p style="padding-top: 40px;">
+
+            </p>
+
+            <div class="button-container">
+
+
+            </div>
+
+            <p id="shortText" style="padding-top: 20px; " class="p_shadow">{{ zav.more_desc|slice:":400" }}</p>
+
+            <p id="moreText" style="padding-top: 13px; display: none;">{{ zav.more_desc }}</p>
+            <a id="readButton" onclick="showMoreText()" class="btn_more">Показать полностью</a>
+
+             <p style="padding-top: 30px;">
+
+                 
+
+                <div class="container1">
+                    <div class="leave-review-container">
+                        <a href="/reting/{{ zav.id }}">
+                            <button class="leave_review">
+
+                                <img src="{% static 'image/likee.png' %}" width="20px" alt="Like Icon"> Оставить отзыв
+                            </button>
+                        </a>
+
+                        <a href="?filter=positive" id="show-positive">
+                            <button class="leave_review1" >
+                                Положительные
+                            </button>
+                        </a>
+                    <a href="?filter=negative" id="show-negative">
+                        <button class="leave_review1" >
+                        Отрицательные
+                        </button>
+                    </a>
+
+                    </div>
+                    <h2>Отзывы о {{zav.name}}</h2>
+
+                    <div class="grid-container">
+
+                    {% for reting in retings %}
+                        {% if  zav.id == reting.zaved_id %}
+
+                        <div class="grid-item">
+                            <h3>{{ reting.author }}</h3>
+                            О ресторане <a href="booking/{{zav.id}}" style="text-decoration: none; color:#00D55A;">{{zav.name}}</a>
+                            <p>{{ reting.content }}</p>
+                            {% if reting.is_good %}
+
+                        <font size="2" style="padding-top: 30px;">Понравилось: {{ reting.bis }}</font>
+                            {% else %}
+                                <font size="2" style="padding-top: 30px;">Не понравилось: {{ reting.bis }}</font>
+                            {% endif %}
+                              <p> <font size="3">{{ reting.created_at }}</font></p>
+                        </div>
+
+                        {% endif %}
+                {% endfor %}
+
+                    </div>
+                </div>
+                
+             </p>
+
+        </div>
+
+        <div class="booking">
+            <h1>Бронирование</h1>
+            <p>Дата</p>
+            <div class="booking-controls">
+                <!--            <select class="form-control input-lg">-->
+                <!--                <option value="2023-12-21">сегодня, 21 декабря</option>-->
+                <!--                <option value="2023-12-22">пятница, 22 декабря</option>-->
+                <!--                <option value="2023-12-23">суббота, 23 декабря</option>-->
+                <!--                <option value="2023-12-24">воскресенье, 24 декабря</option>-->
+                <!--                <option value="2023-12-25">понедельник, 25 декабря</option>-->
+                <!--                <option value="2023-12-26">вторник, 26 декабря</option>-->
+                <!--                <option value="2023-12-27">среда, 27 декабря</option>-->
+                <!--            </select>-->
+                <form action="#" method="post">
+
+                    <input type="date" id="date" name="date">
+
+                </form>
+
+                <div class="time-and-guests">
+                    <div class="time">
+                        <label for="booking-time">Время</label>
+                        <select id="booking-time">
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                            <option value="19:00">19:00</option>
+                            <option value="20:00">20:00</option>
+                            <option value="21:00">21:00</option>
+                            <option value="22:00">22:00</option>
+                            <option value="23:00">23:00</option>
+
+                        </select>
+                    </div>
+                    <div class="guests">
+                        <label for="booking-guests">Гости</label>
+                        <select id="booking-guests">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button class="reserve-button" style="background-color: #f46d3e;" onclick="openModal()">Забронировать
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="myModal2" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal2()">&times;</span>
+        <label for="booking-date">Дата</label>
+        <select id="booking-date2" class="form-control input-lg">
+            <option value="2023-12-21">сегодня, 21 декабря</option>
+            <option value="2023-12-22">пятница, 22 декабря</option>
+            <option value="2023-12-23">суббота, 23 декабря</option>
+            <option value="2023-12-24">воскресенье, 24 декабря</option>
+            <option value="2023-12-25">понедельник, 25 декабря</option>
+            <option value="2023-12-26">вторник, 26 декабря</option>
+            <option value="2023-12-27">среда, 27 декабря</option>
+        </select>
+
+
+        <!-- ... (existing controls) -->
+
+        <div class="time-and-guests">
+            <label for="booking-time">Время</label>
+            <select id="booking-time2" class="form-control input-lg">
+                <option value="11:00">11:00</option>
+                <option value="12:00">12:00</option>
+                <option value="13:00">13:00</option>
+            </select>
+
+            <label for="booking-guests">Гости</label>
+            <select id="booking-guests2" class="form-control input-lg">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+            </select>
+
+            <label for="booking-comments">Пожелания</label>
+            <textarea id="booking-comments2" rows="4" cols="50" class="form-control input-lg"></textarea>
+        </div>
+
+        <button class="reserve-button" style="background-color: #f46d3e;" onclick="confirmReservation()">Подтвердить
+            бронирование
+        </button>
+
+    </div>
+</div>
+
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+
+
+        <form action="#" method="POST">
+            {% csrf_token %}
+            <label for="date">Дата:</label>
+            <input type="date" id="date" name="date">
+
+            <div class="time-and-guests">
+                <div class="time">
+                    <label for="booking-time">Время:</label>
+                    <select id="booking-time" name="booking_time">
+                        <!-- Время -->
+                        <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                            <option value="19:00">19:00</option>
+                            <option value="20:00">20:00</option>
+                            <option value="21:00">21:00</option>
+                            <option value="22:00">22:00</option>
+                            <option value="23:00">23:00</option>
+                    </select>
+                </div>
+                <div class="guests">
+                    <label for="booking-guests">Гости:</label>
+                    <input name="booking_guests" type="number"  class="number_input">
+
+                </div>
+            </div>
+            <label for="booking-comments">Пожелания</label>
+            <textarea id="booking-comments" rows="4" cols="50" class="form-control input-lg" name="prod"></textarea>
+
+            <button type="submit" class="reserve-button">Забронировать</button>
+
+        </form>
+
+
+
+
+
+    </div>
+</div>
+
+{% endif%}
+{% endfor %}
+<script>
+    // Инициализация DatePicker
+    const datepicker = new Pikaday({
+        field: document.getElementById('datepicker'),
+        format: 'DD.MM.YYYY', // Формат даты "DD.MM.YYYY"
+    });
+
+    // Обработчик нажатия на кнопку "Показать календарь"
+    document.getElementById("showCalendar").addEventListener("click", () => {
+        datepicker.show();
+    });
+
+    // Обработчик выбора даты
+    datepicker.onSelect = function (date) {
+        const formattedDate = moment(date).format("DD.MM.YYYY"); // Форматирование даты как "DD.MM.YYYY"
+        document.getElementById("formattedDate").textContent = formattedDate;
+    };
+
+
+    function showMoreText() {
+        var shortText = document.getElementById("shortText");
+        var moreText = document.getElementById("moreText");
+        var btnText = document.querySelector("button");
+        var readButton = document.getElementById("readButton");
+
+        if (shortText.style.display === "none") {
+            shortText.style.display = "inline";
+            moreText.style.display = "none";
+            btnText.textContent = "Read more";
+        } else {
+            shortText.style.display = "none";
+            moreText.style.display = "inline";
+            btnText.textContent = "Read less";
+            readButton.style.display = "none"; // Hide the button after clicking
+        }
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('.slider').slick({
+            prevArrow: '<img src="{% static "image/left-arrow.png" %}" class="slick-prev" alt="Previous">',
+            nextArrow: '<img src="{% static "image/right-arrow.png" %}" class="slick-next" alt="Next">',
+            arrows: true,
+            dots: true,
+            infinite: true,
+            speed: 500,
+            slidesToShow: 1,
+            slidesToScroll: 1
+        });
+    });
+</script>
+<script>
+    function toggleReviewForm() {
+        var reviewForm = document.getElementById("reviewForm");
+        reviewForm.style.display = (reviewForm.style.display === "none") ? "block" : "none";
+    }
+</script>
+
+<script>
+    function redirectToPage() {
+        var url = document.querySelector('.leave_review').getAttribute('data-url');
+        window.location.href = url;
+    }
+</script>
+
+<script>
+    function redirectToRatingPage() {
+        window.location.href = '/reting/5/';
+    }
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var outerContainer = document.querySelector('.outer-container');
+        var bookingDiv = document.querySelector('.booking');
+
+        window.addEventListener('scroll', function () {
+            var containerBottom = outerContainer.getBoundingClientRect().bottom;
+
+            if (containerBottom <= 0) {
+                bookingDiv.classList.add('unfix-booking');
+            } else {
+                bookingDiv.classList.remove('unfix-booking');
+            }
+        });
+    });
+</script>
+
+
+</body>
+</html>

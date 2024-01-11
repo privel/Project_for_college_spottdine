@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>SpottDine - Меню заведения</title>
+    <link rel="stylesheet" href="{% static 'css/reserv.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/icon.png' %}" />
+</head>
+<body>
+
+{% for zav in zaved %}
+{% if menu.id == zav.id %}
+
+<header class="header">
+    <div class="logo"><a href="/", style="text-decoration: none; color: black;">Spott <font
+            color="lightgreen">Dine</font> </a></div>
+    <div class="search-bar">
+        <form action="" method="GET">
+            {% csrf_token %}
+            <input type="text" name="q" placeholder="Поиск..." class="transparent-input">
+            <button type="submit">Найти</button>
+        </form>
+    </div>
+</header>
+<div class="main">
+    <h1><a href="/booking/{{ zav.id }}" class="class_a">{{zav.name}}</a></h1>
+    <div class="descript">
+        <a href="/booking/{{ zav.id }}"><button>Описание</button></a>
+        <button>Меню</button>
+        <a style="text-decoration: none; color: #333333" href="/galery/{{zav.id}}">
+            <button>Фотоальбомы</button>
+        </a>
+
+    </div>
+<div class="content-page">
+    {% for image in zav.menu_photos.all %}
+        <figure><img src="{{ image.photos.url }}" data-image=""></figure>
+        {% empty %}
+        <img src="{{ zav.photos.url }}" alt="Image of {{ zav.name }}">
+        {% endfor %}
+
+</div>
+</div>
+
+{% endif %}
+{% endfor %}
+</body>
+</html>
